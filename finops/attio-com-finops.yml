@@ -1,0 +1,83 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Attio
+providerId: attio-com
+created: '2026-07-02'
+modified: '2026-07-02'
+reconciled: false
+tags:
+- CRM
+- SaaS
+- Per Seat
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Attio spend. Attio is a per-seat SaaS CRM: cost is driven by the
+  number of licensed workspace members multiplied by the plan's per-seat price
+  (Free, Plus, Pro, or Enterprise), billed annually on paid tiers. The REST API
+  is included with the workspace plan and is not billed per call, so API spend is
+  not a separate metered line item - it is governed by rate limits rather than
+  usage charges. The primary cost levers are seat count, seat tier, and right-
+  sizing the number of active members.
+notes: >-
+  Per-seat rates are not reconciled here beyond publicly reported figures
+  (roughly $29 and $69 per user per month, billed annually, for Plus and Pro;
+  Enterprise is custom). Because API access carries no incremental fee, FinOps
+  attention focuses on seat allocation and tier selection rather than call
+  volume. Verify current prices on the Attio pricing page.
+sources:
+- https://attio.com/pricing
+- https://docs.attio.com/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Attio
+serviceCategory: Business Applications
+billingModel:
+  pricingCategory: Subscription-Based
+  billingFrequency: Annual
+  billingCurrency: USD
+  chargeCategories:
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Attio CRM
+  ServiceCategory: Business Applications
+  ProviderName: Attio
+  PublisherName: Attio
+  InvoiceIssuerName: Attio
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+  PricingCategory: Subscription-Based
+meters:
+- name: licensed_seats
+  description: Number of licensed workspace members, billed per seat at the plan's per-seat rate.
+  unit: seats
+  aggregation: max
+  dimensions:
+  - workspace
+  - plan
+- name: plan_tier
+  description: The subscribed plan tier (Free, Plus, Pro, Enterprise) that sets the per-seat price.
+  unit: tier
+  aggregation: last
+  dimensions:
+  - workspace
+principles:
+- name: Visibility
+  description: Track licensed seats per workspace and plan tier; API usage carries no incremental charge, so monitor seats rather than call volume.
+- name: Allocation
+  description: Map seats to teams or cost centers so per-seat spend attributes to the group using the CRM.
+- name: Optimization
+  description: Right-size seat count by reclaiming inactive members and choose the lowest tier that still delivers required features; avoid over-provisioning Pro seats for read-only users.
+- name: Accountability
+  description: Assign an owner for the Attio subscription; review seat count and tier against actual active usage each renewal cycle.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

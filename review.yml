@@ -1,0 +1,142 @@
+aid: attio-com
+name: Attio
+review:
+  question: Does Attio expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-02'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Attio's own public API surface is a
+    request/response REST API over HTTPS (base https://api.attio.com/v2). Its
+    only server-push mechanism is outbound webhooks - HMAC-SHA256-signed HTTP
+    POST callbacks delivered to a subscriber's target URL when data changes.
+    There is no WebSocket (ws:// or wss://) and no Server-Sent Events (SSE)
+    transport on Attio's API to model, so no AsyncAPI spec was created. The
+    webhook delivery is documented in the RateLimits and review notes rather
+    than as an AsyncAPI channel.
+findings:
+  summary: |
+    Attio does not publish a documented public WebSocket API. Attio is an
+    AI-native CRM built on an object/attribute/record data model. Its developer
+    platform exposes a REST API at https://api.attio.com/v2, authenticated with
+    a Bearer access token (API key or OAuth 2.0) and scoped by granular
+    permissions. All documented endpoints - objects, records, attributes, lists,
+    list entries, notes, tasks, comments, threads, webhooks, workspace members,
+    meetings, files, and self/meta - are request/response REST over HTTPS. The
+    only push mechanism Attio documents is webhooks: the platform delivers
+    real-time HTTP POST requests to a chosen target URL when subscribed events
+    occur (for example list-entry.created, note.created, record changes). Each
+    delivery carries an Attio-Signature (also X-Attio-Signature) header that is a
+    SHA-256 HMAC of the request body signed with the webhook secret, plus an
+    Idempotency-Key header; delivery is at-least-once with a 5-second timeout.
+    No realtime, bidirectional, or streaming WebSocket (ws:// or wss://) endpoint
+    is documented anywhere in Attio's API reference.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.attio.com/v2
+      documented: true
+      note: The entire Attio public API is request/response REST over HTTPS with Bearer authentication.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: >-
+        Outbound HTTP POST callbacks to a subscriber target URL on subscribed
+        events. HMAC-SHA256 signed (Attio-Signature / X-Attio-Signature),
+        at-least-once delivery with an Idempotency-Key header and a 5-second
+        timeout. Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented in Attio's API reference, webhooks guide, or developer platform pages as of the review date.
+  endpointsConfirmedRest:
+    - POST   https://api.attio.com/v2/objects/{object}/records/query
+    - PUT    https://api.attio.com/v2/objects/{object}/records
+    - POST   https://api.attio.com/v2/objects/{object}/records
+    - GET    https://api.attio.com/v2/objects/{object}/records/{record_id}
+    - PATCH  https://api.attio.com/v2/objects/{object}/records/{record_id}
+    - PUT    https://api.attio.com/v2/objects/{object}/records/{record_id}
+    - DELETE https://api.attio.com/v2/objects/{object}/records/{record_id}
+    - GET    https://api.attio.com/v2/objects
+    - POST   https://api.attio.com/v2/objects
+    - GET    https://api.attio.com/v2/objects/{object}
+    - PATCH  https://api.attio.com/v2/objects/{object}
+    - GET    https://api.attio.com/v2/lists
+    - POST   https://api.attio.com/v2/lists
+    - GET    https://api.attio.com/v2/lists/{list}
+    - PATCH  https://api.attio.com/v2/lists/{list}
+    - POST   https://api.attio.com/v2/lists/{list}/entries/query
+    - GET    https://api.attio.com/v2/notes
+    - POST   https://api.attio.com/v2/notes
+    - GET    https://api.attio.com/v2/tasks
+    - POST   https://api.attio.com/v2/tasks
+    - GET    https://api.attio.com/v2/threads
+    - POST   https://api.attio.com/v2/comments
+    - GET    https://api.attio.com/v2/webhooks
+    - POST   https://api.attio.com/v2/webhooks
+    - GET    https://api.attio.com/v2/workspace_members
+    - GET    https://api.attio.com/v2/self
+  endpointsModeled:
+    - GET    https://api.attio.com/v2/{target}/{identifier}/attributes
+    - POST   https://api.attio.com/v2/{target}/{identifier}/attributes
+    - GET    https://api.attio.com/v2/{target}/{identifier}/attributes/{attribute}
+    - PATCH  https://api.attio.com/v2/{target}/{identifier}/attributes/{attribute}
+    - GET    https://api.attio.com/v2/{target}/{identifier}/attributes/{attribute}/options
+    - GET    https://api.attio.com/v2/{target}/{identifier}/attributes/{attribute}/statuses
+    - GET    https://api.attio.com/v2/objects/{object}/records/{record_id}/entries
+    - GET    https://api.attio.com/v2/objects/{object}/records/{record_id}/attributes/{attribute}/values
+    - POST   https://api.attio.com/v2/lists/{list}/entries
+    - PUT    https://api.attio.com/v2/lists/{list}/entries
+    - GET    https://api.attio.com/v2/lists/{list}/entries/{entry_id}
+    - PATCH  https://api.attio.com/v2/lists/{list}/entries/{entry_id}
+    - DELETE https://api.attio.com/v2/lists/{list}/entries/{entry_id}
+    - GET    https://api.attio.com/v2/notes/{note_id}
+    - DELETE https://api.attio.com/v2/notes/{note_id}
+    - GET    https://api.attio.com/v2/tasks/{task_id}
+    - PATCH  https://api.attio.com/v2/tasks/{task_id}
+    - DELETE https://api.attio.com/v2/tasks/{task_id}
+    - GET    https://api.attio.com/v2/threads/{thread_id}
+    - GET    https://api.attio.com/v2/comments/{comment_id}
+    - DELETE https://api.attio.com/v2/comments/{comment_id}
+    - GET    https://api.attio.com/v2/webhooks/{webhook_id}
+    - PATCH  https://api.attio.com/v2/webhooks/{webhook_id}
+    - DELETE https://api.attio.com/v2/webhooks/{webhook_id}
+    - GET    https://api.attio.com/v2/workspace_members/{workspace_member_id}
+  webhookMechanism:
+    delivery: HTTP POST to subscriber target URL (HTTPS required)
+    signing: SHA-256 HMAC of the request body using the webhook secret, sent in the Attio-Signature (and X-Attio-Signature) header
+    deliveryGuarantee: at-least-once, with an Idempotency-Key header for deduplication
+    timeout: 5 seconds per delivery attempt
+    rateLimit: up to 25 requests per second per target URL (raisable via support)
+    sampleEvents:
+      - list-entry.created
+      - list-entry.updated
+      - list-entry.deleted
+      - note.created
+      - record.created
+sources:
+  - url: https://docs.attio.com/
+    type: Documentation
+    note: Attio developer docs. REST base URL https://api.attio.com/v2; no WebSocket transport mentioned.
+  - url: https://docs.attio.com/rest-api/endpoint-reference/records/list-records
+    type: APIReference
+    note: Confirmed records query endpoint POST /v2/objects/{object}/records/query with record_permission:read and object_configuration:read scopes.
+  - url: https://docs.attio.com/rest-api/guides/webhooks
+    type: Documentation
+    note: Webhooks deliver signed (Attio-Signature, SHA-256 HMAC) HTTP POSTs to a target URL; at-least-once with Idempotency-Key and a 5-second timeout. No WebSocket.
+  - url: https://docs.attio.com/rest-api/how-to/rate-limiting
+    type: Documentation
+    note: 100 read requests/sec and 25 write requests/sec per token; HTTP 429 when exceeded. Webhook delivery capped at 25/sec per URL.
+  - url: https://attio.com/platform/developers
+    type: Documentation
+    note: Developer platform overview - REST API, webhooks, and App SDK; no WebSocket API.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Attio's own public API is
+    request/response REST (https://api.attio.com/v2), and its only server-push
+    mechanism is outbound signed HTTP webhooks. No AsyncAPI document was created
+    because there is no WebSocket or SSE transport on Attio's API to model; the
+    webhook mechanism is documented in this review and in the RateLimits file.

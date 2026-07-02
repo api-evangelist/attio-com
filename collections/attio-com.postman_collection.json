@@ -1,0 +1,496 @@
+{
+  "info": {
+    "name": "Attio REST API",
+    "description": "The Attio REST API exposes the Attio CRM's object/attribute/record data model over HTTPS. Base URL: https://api.attio.com/v2. All requests are authenticated with a Bearer access token (API key or OAuth) scoped by granular permissions. Rate limits: 100 read/sec and 25 write/sec per token (HTTP 429 when exceeded).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{bearerToken}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.attio.com/v2", "type": "string" },
+    { "key": "bearerToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Objects",
+      "item": [
+        {
+          "name": "List objects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/objects", "host": ["{{baseUrl}}"], "path": ["objects"] },
+            "description": "Lists all system-defined and user-defined objects in your workspace."
+          }
+        },
+        {
+          "name": "Create an object",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/objects", "host": ["{{baseUrl}}"], "path": ["objects"] },
+            "description": "Creates a new custom object in your workspace."
+          }
+        },
+        {
+          "name": "Get an object",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/objects/:object", "host": ["{{baseUrl}}"], "path": ["objects", ":object"], "variable": [{ "key": "object", "value": "people" }] },
+            "description": "Gets a single object by its ID or slug."
+          }
+        },
+        {
+          "name": "Update an object",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/objects/:object", "host": ["{{baseUrl}}"], "path": ["objects", ":object"], "variable": [{ "key": "object", "value": "people" }] },
+            "description": "Updates a single object."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Records",
+      "item": [
+        {
+          "name": "List records",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"filter\": {},\n  \"sorts\": [],\n  \"limit\": 25\n}" },
+            "url": { "raw": "{{baseUrl}}/objects/:object/records/query", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records", "query"], "variable": [{ "key": "object", "value": "people" }] },
+            "description": "Lists records with optional filter and sort. Confirmed endpoint (POST /v2/objects/{object}/records/query)."
+          }
+        },
+        {
+          "name": "Create a record",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": { \"values\": {} }\n}" },
+            "url": { "raw": "{{baseUrl}}/objects/:object/records", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records"], "variable": [{ "key": "object", "value": "people" }] },
+            "description": "Creates a new record."
+          }
+        },
+        {
+          "name": "Assert a record",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": { \"values\": {} }\n}" },
+            "url": { "raw": "{{baseUrl}}/objects/:object/records", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records"], "variable": [{ "key": "object", "value": "people" }] },
+            "description": "Creates or updates (upserts) a record using a matching attribute."
+          }
+        },
+        {
+          "name": "Get a record",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/objects/:object/records/:record_id", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records", ":record_id"], "variable": [{ "key": "object", "value": "people" }, { "key": "record_id", "value": "" }] },
+            "description": "Gets a single record by its record_id."
+          }
+        },
+        {
+          "name": "Update a record (append)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": { \"values\": {} }\n}" },
+            "url": { "raw": "{{baseUrl}}/objects/:object/records/:record_id", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records", ":record_id"], "variable": [{ "key": "object", "value": "people" }, { "key": "record_id", "value": "" }] },
+            "description": "Updates a record, appending values to multiselect attributes."
+          }
+        },
+        {
+          "name": "Delete a record",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/objects/:object/records/:record_id", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records", ":record_id"], "variable": [{ "key": "object", "value": "people" }, { "key": "record_id", "value": "" }] },
+            "description": "Deletes a record by its record_id."
+          }
+        },
+        {
+          "name": "List record entries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/objects/:object/records/:record_id/entries", "host": ["{{baseUrl}}"], "path": ["objects", ":object", "records", ":record_id", "entries"], "variable": [{ "key": "object", "value": "people" }, { "key": "record_id", "value": "" }] },
+            "description": "Lists all list entries, across all lists, for which this record is the parent."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Attributes",
+      "item": [
+        {
+          "name": "List attributes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/:target/:identifier/attributes", "host": ["{{baseUrl}}"], "path": [":target", ":identifier", "attributes"], "variable": [{ "key": "target", "value": "objects" }, { "key": "identifier", "value": "people" }] },
+            "description": "Lists all attributes defined on a specific object or list."
+          }
+        },
+        {
+          "name": "Create an attribute",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/:target/:identifier/attributes", "host": ["{{baseUrl}}"], "path": [":target", ":identifier", "attributes"], "variable": [{ "key": "target", "value": "objects" }, { "key": "identifier", "value": "people" }] },
+            "description": "Creates a new attribute on either an object or a list."
+          }
+        },
+        {
+          "name": "Get an attribute",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/:target/:identifier/attributes/:attribute", "host": ["{{baseUrl}}"], "path": [":target", ":identifier", "attributes", ":attribute"], "variable": [{ "key": "target", "value": "objects" }, { "key": "identifier", "value": "people" }, { "key": "attribute", "value": "" }] },
+            "description": "Gets information about a single attribute."
+          }
+        },
+        {
+          "name": "List select options",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/:target/:identifier/attributes/:attribute/options", "host": ["{{baseUrl}}"], "path": [":target", ":identifier", "attributes", ":attribute", "options"], "variable": [{ "key": "target", "value": "objects" }, { "key": "identifier", "value": "people" }, { "key": "attribute", "value": "" }] },
+            "description": "Lists all select options for a select-type attribute."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lists",
+      "item": [
+        {
+          "name": "List all lists",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/lists", "host": ["{{baseUrl}}"], "path": ["lists"] },
+            "description": "Lists all lists that your access token has access to."
+          }
+        },
+        {
+          "name": "Create a list",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/lists", "host": ["{{baseUrl}}"], "path": ["lists"] },
+            "description": "Creates a new list."
+          }
+        },
+        {
+          "name": "Get a list",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/lists/:list", "host": ["{{baseUrl}}"], "path": ["lists", ":list"], "variable": [{ "key": "list", "value": "" }] },
+            "description": "Gets a single list by its ID or slug."
+          }
+        },
+        {
+          "name": "Update a list",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/lists/:list", "host": ["{{baseUrl}}"], "path": ["lists", ":list"], "variable": [{ "key": "list", "value": "" }] },
+            "description": "Updates an existing list."
+          }
+        }
+      ]
+    },
+    {
+      "name": "List Entries",
+      "item": [
+        {
+          "name": "List entries",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"filter\": {},\n  \"sorts\": []\n}" },
+            "url": { "raw": "{{baseUrl}}/lists/:list/entries/query", "host": ["{{baseUrl}}"], "path": ["lists", ":list", "entries", "query"], "variable": [{ "key": "list", "value": "" }] },
+            "description": "Lists entries in a given list, with optional filter and sort."
+          }
+        },
+        {
+          "name": "Create an entry",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/lists/:list/entries", "host": ["{{baseUrl}}"], "path": ["lists", ":list", "entries"], "variable": [{ "key": "list", "value": "" }] },
+            "description": "Adds a record to a list as a new list entry."
+          }
+        },
+        {
+          "name": "Get a list entry",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/lists/:list/entries/:entry_id", "host": ["{{baseUrl}}"], "path": ["lists", ":list", "entries", ":entry_id"], "variable": [{ "key": "list", "value": "" }, { "key": "entry_id", "value": "" }] },
+            "description": "Gets a single list entry by its entry_id."
+          }
+        },
+        {
+          "name": "Delete a list entry",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/lists/:list/entries/:entry_id", "host": ["{{baseUrl}}"], "path": ["lists", ":list", "entries", ":entry_id"], "variable": [{ "key": "list", "value": "" }, { "key": "entry_id", "value": "" }] },
+            "description": "Deletes a list entry by its entry_id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notes",
+      "item": [
+        {
+          "name": "List notes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/notes", "host": ["{{baseUrl}}"], "path": ["notes"] },
+            "description": "Lists notes for all records or for a specific record."
+          }
+        },
+        {
+          "name": "Create a note",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/notes", "host": ["{{baseUrl}}"], "path": ["notes"] },
+            "description": "Creates a new note for a given record."
+          }
+        },
+        {
+          "name": "Get a note",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/notes/:note_id", "host": ["{{baseUrl}}"], "path": ["notes", ":note_id"], "variable": [{ "key": "note_id", "value": "" }] },
+            "description": "Gets a single note by its note_id."
+          }
+        },
+        {
+          "name": "Delete a note",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/notes/:note_id", "host": ["{{baseUrl}}"], "path": ["notes", ":note_id"], "variable": [{ "key": "note_id", "value": "" }] },
+            "description": "Deletes a note by its note_id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "List tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/tasks", "host": ["{{baseUrl}}"], "path": ["tasks"] },
+            "description": "Lists all tasks."
+          }
+        },
+        {
+          "name": "Create a task",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/tasks", "host": ["{{baseUrl}}"], "path": ["tasks"] },
+            "description": "Creates a new task."
+          }
+        },
+        {
+          "name": "Get a task",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/tasks/:task_id", "host": ["{{baseUrl}}"], "path": ["tasks", ":task_id"], "variable": [{ "key": "task_id", "value": "" }] },
+            "description": "Gets a single task by its task_id."
+          }
+        },
+        {
+          "name": "Update a task",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/tasks/:task_id", "host": ["{{baseUrl}}"], "path": ["tasks", ":task_id"], "variable": [{ "key": "task_id", "value": "" }] },
+            "description": "Updates a task's deadline, completion status, or assignees."
+          }
+        },
+        {
+          "name": "Delete a task",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/tasks/:task_id", "host": ["{{baseUrl}}"], "path": ["tasks", ":task_id"], "variable": [{ "key": "task_id", "value": "" }] },
+            "description": "Deletes a task by its task_id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Comments and Threads",
+      "item": [
+        {
+          "name": "List threads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/threads", "host": ["{{baseUrl}}"], "path": ["threads"] },
+            "description": "Lists threads of comments on a record or list entry."
+          }
+        },
+        {
+          "name": "Get a thread",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/threads/:thread_id", "host": ["{{baseUrl}}"], "path": ["threads", ":thread_id"], "variable": [{ "key": "thread_id", "value": "" }] },
+            "description": "Gets all comments in a thread."
+          }
+        },
+        {
+          "name": "Create a comment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/comments", "host": ["{{baseUrl}}"], "path": ["comments"] },
+            "description": "Creates a new comment related to a thread, record, or entry."
+          }
+        },
+        {
+          "name": "Get a comment",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/comments/:comment_id", "host": ["{{baseUrl}}"], "path": ["comments", ":comment_id"], "variable": [{ "key": "comment_id", "value": "" }] },
+            "description": "Gets a single comment by its comment_id."
+          }
+        },
+        {
+          "name": "Delete a comment",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/comments/:comment_id", "host": ["{{baseUrl}}"], "path": ["comments", ":comment_id"], "variable": [{ "key": "comment_id", "value": "" }] },
+            "description": "Deletes a comment by its comment_id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Webhooks",
+      "item": [
+        {
+          "name": "List webhooks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/webhooks", "host": ["{{baseUrl}}"], "path": ["webhooks"] },
+            "description": "Gets all of the webhooks in your workspace."
+          }
+        },
+        {
+          "name": "Create a webhook",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {\n    \"target_url\": \"https://example.com/hook\",\n    \"subscriptions\": []\n  }\n}" },
+            "url": { "raw": "{{baseUrl}}/webhooks", "host": ["{{baseUrl}}"], "path": ["webhooks"] },
+            "description": "Creates a webhook and its associated event subscriptions."
+          }
+        },
+        {
+          "name": "Get a webhook",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/webhooks/:webhook_id", "host": ["{{baseUrl}}"], "path": ["webhooks", ":webhook_id"], "variable": [{ "key": "webhook_id", "value": "" }] },
+            "description": "Gets a single webhook by its webhook_id."
+          }
+        },
+        {
+          "name": "Update a webhook",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"data\": {}\n}" },
+            "url": { "raw": "{{baseUrl}}/webhooks/:webhook_id", "host": ["{{baseUrl}}"], "path": ["webhooks", ":webhook_id"], "variable": [{ "key": "webhook_id", "value": "" }] },
+            "description": "Updates a webhook and its associated subscriptions."
+          }
+        },
+        {
+          "name": "Delete a webhook",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/webhooks/:webhook_id", "host": ["{{baseUrl}}"], "path": ["webhooks", ":webhook_id"], "variable": [{ "key": "webhook_id", "value": "" }] },
+            "description": "Deletes a webhook by its webhook_id."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workspace Members",
+      "item": [
+        {
+          "name": "List workspace members",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/workspace_members", "host": ["{{baseUrl}}"], "path": ["workspace_members"] },
+            "description": "Lists all workspace members in the workspace."
+          }
+        },
+        {
+          "name": "Get a workspace member",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/workspace_members/:workspace_member_id", "host": ["{{baseUrl}}"], "path": ["workspace_members", ":workspace_member_id"], "variable": [{ "key": "workspace_member_id", "value": "" }] },
+            "description": "Gets a single workspace member by its ID."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Meta",
+      "item": [
+        {
+          "name": "Identify self",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/self", "host": ["{{baseUrl}}"], "path": ["self"] },
+            "description": "Identifies the current access token, its workspace, member, and permissions."
+          }
+        }
+      ]
+    }
+  ]
+}

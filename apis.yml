@@ -1,0 +1,295 @@
+aid: attio-com
+url: https://raw.githubusercontent.com/api-evangelist/attio-com/refs/heads/main/apis.yml
+name: Attio
+kind: company
+description: Attio is an AI-native customer relationship management (CRM) platform built
+  on a flexible object/attribute/record data model. The Attio REST API (base
+  https://api.attio.com/v2) exposes that data model programmatically - objects, records,
+  attributes, lists, list entries, notes, tasks, comments, threads, workspace members,
+  and webhooks - letting teams sync data, build workflows, and extend the CRM.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- CRM
+- Customer Relationship Management
+- AI
+- Sales
+- Data Model
+- Objects and Records
+created: '2026-07-02'
+modified: '2026-07-02'
+specificationVersion: '0.19'
+apis:
+- aid: attio-com:attio-com-objects-api
+  name: Attio Objects API
+  tags:
+  - Objects
+  - Data Model
+  - Schema
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/objects/list-objects
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/how-to/data-model
+    type: Documentation
+  - url: https://docs.attio.com/rest-api/endpoint-reference/objects/list-objects
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: List, create, get, and update the objects (people, companies, deals,
+    users, workspaces, and custom objects) that define the schema of an Attio
+    workspace. Objects are the top-level model that records and attributes hang off of.
+- aid: attio-com:attio-com-records-api
+  name: Attio Records API
+  tags:
+  - Records
+  - CRUD
+  - Upsert
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/records/list-records
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/records/list-records
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Full lifecycle for records within any object - query (list with filter
+    and sort), create, get, update (append or overwrite multiselect values), delete,
+    and assert/upsert by a matching attribute. Also lists a record's attribute value
+    history and the list entries a record belongs to.
+- aid: attio-com:attio-com-attributes-api
+  name: Attio Attributes API
+  tags:
+  - Attributes
+  - Schema
+  - Select Options
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/attributes/list-attributes
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/attributes/list-attributes
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Manage the attributes (typed fields) defined on an object or a list -
+    list, create, get, and update attributes, plus manage the select options and
+    statuses that power select-type and status-type attributes.
+- aid: attio-com:attio-com-lists-api
+  name: Attio Lists API
+  tags:
+  - Lists
+  - Pipelines
+  - Views
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/lists/list-all-lists
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/lists/list-all-lists
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Create, list, get, and update lists - the collections that model a
+    specific process (such as a sales pipeline) by referencing records from one or
+    more objects and layering their own attributes on top.
+- aid: attio-com:attio-com-list-entries-api
+  name: Attio List Entries API
+  tags:
+  - List Entries
+  - Pipelines
+  - CRUD
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/entries/list-entries
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/entries/list-entries
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Manage the entries within a list - query (filter and sort), add a
+    record as a new entry, get, update (append or overwrite multiselect values),
+    delete, and assert/upsert an entry by its parent record, plus read entry-specific
+    attribute values.
+- aid: attio-com:attio-com-deals-api
+  name: Attio Deals API
+  tags:
+  - Deals
+  - Sales
+  - Pipeline
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/deals/list-deals
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/deals/list-deals
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: The Deals CRM surface, expressed through the standard records endpoints
+    with the object set to `deals` - query, create, get, update, delete, and upsert
+    deal records with value, stage, and associated people and companies.
+- aid: attio-com:attio-com-notes-api
+  name: Attio Notes API
+  tags:
+  - Notes
+  - Activity
+  - CRM
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/notes/list-notes
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/notes/list-notes
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Create, list, get, and delete notes attached to records - free-form
+    plaintext or Markdown content used to capture context and activity against a
+    person, company, deal, or other record.
+- aid: attio-com:attio-com-tasks-api
+  name: Attio Tasks API
+  tags:
+  - Tasks
+  - Workflow
+  - Assignments
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/tasks/list-tasks
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/tasks/list-tasks
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Create, list, get, update, and delete tasks - actionable to-dos with a
+    deadline, completion status, assignees, and links to the records they relate to.
+- aid: attio-com:attio-com-comments-threads-api
+  name: Attio Comments and Threads API
+  tags:
+  - Comments
+  - Threads
+  - Collaboration
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/threads/list-threads
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/threads/list-threads
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Collaboration on records and list entries. List and get threads of
+    comments, and create, get, and delete individual comments within a thread, record,
+    or entry - the discussion layer of the CRM.
+- aid: attio-com:attio-com-webhooks-api
+  name: Attio Webhooks API
+  tags:
+  - Webhooks
+  - Events
+  - Subscriptions
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/webhooks/list-webhooks
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/guides/webhooks
+    type: Documentation
+  - url: https://docs.attio.com/rest-api/endpoint-reference/webhooks/list-webhooks
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Create, list, get, update, and delete webhooks and their event
+    subscriptions. Attio delivers HMAC-SHA256-signed HTTP POST callbacks to your
+    target URL when records, list entries, notes, tasks, and comments change.
+- aid: attio-com:attio-com-workspace-members-api
+  name: Attio Workspace Members API
+  tags:
+  - Workspace Members
+  - Users
+  - Identity
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/workspace-members/list-workspace-members
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/workspace-members/list-workspace-members
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: List and get the workspace members - the human users that belong to an
+    Attio workspace - used to resolve assignees, note authors, and access controls.
+- aid: attio-com:attio-com-meta-self-api
+  name: Attio Meta / Self API
+  tags:
+  - Meta
+  - Self
+  - Token Introspection
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.attio.com/rest-api/endpoint-reference/meta/identify
+  baseURL: https://api.attio.com/v2
+  properties:
+  - url: https://docs.attio.com/rest-api/endpoint-reference/meta/identify
+    type: APIReference
+  - url: openapi/attio-com-openapi.yml
+    type: OpenAPI
+  - url: collections/attio-com.postman_collection.json
+    type: PostmanCollection
+  - url: collections/attio-com.opencollection.json
+    type: OpenCollection
+  description: Identify the current access token - the workspace it is linked to, the
+    authorizing member, and the scopes and permissions it holds. Useful for token
+    introspection and health checks before making other calls.
+common:
+- type: GitHubOrganization
+  url: https://github.com/attio
+- type: LinkedIn
+  url: https://www.linkedin.com/company/attio
+- type: Website
+  url: https://attio.com/
+- type: Documentation
+  url: https://docs.attio.com/
+- type: Plans
+  url: plans/attio-com-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/attio-com-rate-limits.yml
+- type: FinOps
+  url: finops/attio-com-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

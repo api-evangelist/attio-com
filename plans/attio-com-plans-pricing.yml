@@ -1,0 +1,125 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Attio
+providerId: attio-com
+created: '2026-07-02'
+modified: '2026-07-02'
+reconciled: false
+tags:
+- CRM
+- Customer Relationship Management
+- Sales
+- Per Seat
+- Plans
+description: >-
+  Attio is priced per seat (per user) across four tiers: Free, Plus, Pro, and
+  Enterprise. Paid tiers are billed annually; the listed per-seat prices already
+  bake in the annual (roughly 20%) discount, so month-to-month equivalents are
+  higher. The Free tier is a genuine free plan (not a trial) but caps the number
+  of members. The REST API is available to paid workspaces and is not metered as
+  a separate line item - API access is governed by the workspace plan and by
+  documented rate limits rather than by per-call pricing.
+notes: >-
+  Prices below reflect publicly reported Attio pricing as of mid-2026: Plus at
+  about $29/user/month and Pro at about $69/user/month billed annually
+  (approximately $34 and $86 respectively when treated month-to-month).
+  Enterprise is custom/contact-sales. Verify current per-seat prices, seat caps,
+  and feature gates on the Attio pricing page during reconciliation.
+sources:
+- https://attio.com/pricing
+- https://attio.com/help/reference/workspace-settings-billing/attio-plans-and-features
+- https://docs.attio.com/
+plans:
+- id: attio-free
+  name: Free
+  type: free
+  description: >-
+    A genuinely free plan for individuals and very small teams, capped at a small
+    number of members. Includes the core CRM, the object/record data model, and
+    REST API access, subject to the standard rate limits.
+  entries:
+  - label: Included Seats
+    name: free_seats
+    type: usage
+    metric: seats
+    limit: 3
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '0'
+    userMultiplied: false
+  elements:
+  - name: Core CRM
+  - name: REST API Access
+  - name: Objects, Records, Lists
+- id: attio-plus
+  name: Plus
+  type: paid
+  description: >-
+    Removes the Free seat cap and adds email sync and additional collaboration
+    features. Billed annually per seat.
+  entries:
+  - label: Per Seat
+    name: plus_seat
+    type: flat
+    metric: seat
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '29'
+    currency: USD
+    userMultiplied: true
+  elements:
+  - name: Unlimited Seats
+  - name: Email Sync
+  - name: REST API Access
+- id: attio-pro
+  name: Pro
+  type: paid
+  description: >-
+    For growing sales teams - adds call intelligence, sequencing, and finer team
+    permissions on top of Plus. Billed annually per seat.
+  entries:
+  - label: Per Seat
+    name: pro_seat
+    type: flat
+    metric: seat
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '69'
+    currency: USD
+    userMultiplied: true
+  elements:
+  - name: Call Recording and Intelligence
+  - name: Sequences
+  - name: Advanced Permissions
+  - name: REST API Access
+- id: attio-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom plan for larger organizations - advanced security, SSO/SCIM, audit
+    logs, higher limits, and negotiated terms. Contact Attio sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: true
+  elements:
+  - name: SSO and SCIM
+  - name: Audit Logs
+  - name: Custom Limits
+  - name: Priority Support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

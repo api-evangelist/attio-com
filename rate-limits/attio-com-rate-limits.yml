@@ -1,0 +1,61 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Attio
+providerId: attio-com
+created: '2026-07-02'
+modified: '2026-07-02'
+reconciled: false
+tags:
+- CRM
+- API
+- Rate Limiting
+- Quotas
+- Webhooks
+description: >-
+  Attio publishes explicit numeric rate limits for its REST API, expressed as
+  requests per second split by operation type. Read requests are limited to 100
+  per second and write requests to 25 per second. Exceeding a limit returns an
+  HTTP 429 (Too Many Requests) response, and clients are expected to back off and
+  retry. Webhook delivery is separately capped at 25 requests per second per
+  target URL, with support able to raise that on request.
+notes: >-
+  Limits below reflect Attio's documented values as of the review date. The API
+  distinguishes read from write operations; batch/query POST endpoints that read
+  data (for example records/query) count toward the read limit. Verify current
+  numbers on the Attio rate-limits documentation during reconciliation.
+sources:
+- https://docs.attio.com/rest-api/how-to/rate-limiting
+- https://docs.attio.com/rest-api/guides/webhooks
+- https://docs.attio.com/
+responseCodes:
+  throttled: 429
+limits:
+- name: Read Requests
+  scope: token
+  metric: requests
+  limit: 100
+  timeUnit: second
+  notes: Up to 100 read (GET and read-style query) requests per second per access token.
+- name: Write Requests
+  scope: token
+  metric: requests
+  limit: 25
+  timeUnit: second
+  notes: Up to 25 write (POST/PATCH/PUT/DELETE) requests per second per access token.
+- name: Webhook Delivery
+  scope: webhook
+  metric: requests
+  limit: 25
+  timeUnit: second
+  notes: Attio delivers at most 25 webhook HTTP POSTs per second to a given target URL; contact support to raise it.
+policies:
+- name: Throttling Response
+  description: Requests over the limit receive an HTTP 429 (Too Many Requests) response.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter on 429 responses and stay within the per-second read/write budgets.
+- name: Webhook Delivery Guarantee
+  description: Webhooks are delivered at-least-once with an Idempotency-Key header and a 5-second delivery timeout; consumers must deduplicate on the idempotency key.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

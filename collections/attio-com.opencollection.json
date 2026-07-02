@@ -1,0 +1,463 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Attio REST API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Objects", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List objects.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/objects" },
+          "docs": "Lists all system-defined and user-defined objects in your workspace."
+        },
+        {
+          "info": { "name": "Create an object.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.attio.com/v2/objects", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a new custom object in your workspace."
+        },
+        {
+          "info": { "name": "Get an object.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/objects/:object",
+            "params": [{ "name": "object", "value": "", "type": "path", "description": "Object ID or slug." }]
+          },
+          "docs": "Gets a single object by its ID or slug."
+        },
+        {
+          "info": { "name": "Update an object.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.attio.com/v2/objects/:object",
+            "params": [{ "name": "object", "value": "", "type": "path", "description": "Object ID or slug." }],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Updates a single object."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Records", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List records.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.attio.com/v2/objects/:object/records/query",
+            "params": [{ "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." }],
+            "body": { "type": "json", "data": "{\n  \"filter\": {},\n  \"sorts\": [],\n  \"limit\": 25\n}" }
+          },
+          "docs": "Lists records with optional filter and sort. Confirmed endpoint."
+        },
+        {
+          "info": { "name": "Create a record.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.attio.com/v2/objects/:object/records",
+            "params": [{ "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." }],
+            "body": { "type": "json", "data": "{\n  \"data\": { \"values\": {} }\n}" }
+          },
+          "docs": "Creates a new record."
+        },
+        {
+          "info": { "name": "Assert a record.", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.attio.com/v2/objects/:object/records",
+            "params": [{ "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." }],
+            "body": { "type": "json", "data": "{\n  \"data\": { \"values\": {} }\n}" }
+          },
+          "docs": "Creates or updates (upserts) a record using a matching attribute."
+        },
+        {
+          "info": { "name": "Get a record.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/objects/:object/records/:record_id",
+            "params": [
+              { "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." },
+              { "name": "record_id", "value": "", "type": "path", "description": "Record ID." }
+            ]
+          },
+          "docs": "Gets a single record by its record_id."
+        },
+        {
+          "info": { "name": "Update a record (append).", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.attio.com/v2/objects/:object/records/:record_id",
+            "params": [
+              { "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." },
+              { "name": "record_id", "value": "", "type": "path", "description": "Record ID." }
+            ],
+            "body": { "type": "json", "data": "{\n  \"data\": { \"values\": {} }\n}" }
+          },
+          "docs": "Updates a record, appending values to multiselect attributes."
+        },
+        {
+          "info": { "name": "Delete a record.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.attio.com/v2/objects/:object/records/:record_id",
+            "params": [
+              { "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." },
+              { "name": "record_id", "value": "", "type": "path", "description": "Record ID." }
+            ]
+          },
+          "docs": "Deletes a record by its record_id."
+        },
+        {
+          "info": { "name": "List record entries.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/objects/:object/records/:record_id/entries",
+            "params": [
+              { "name": "object", "value": "people", "type": "path", "description": "Object ID or slug." },
+              { "name": "record_id", "value": "", "type": "path", "description": "Record ID." }
+            ]
+          },
+          "docs": "Lists all list entries, across all lists, for which this record is the parent."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Attributes", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List attributes.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/:target/:identifier/attributes",
+            "params": [
+              { "name": "target", "value": "objects", "type": "path", "description": "objects or lists." },
+              { "name": "identifier", "value": "people", "type": "path", "description": "Object or list ID/slug." }
+            ]
+          },
+          "docs": "Lists all attributes defined on a specific object or list."
+        },
+        {
+          "info": { "name": "Create an attribute.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.attio.com/v2/:target/:identifier/attributes",
+            "params": [
+              { "name": "target", "value": "objects", "type": "path", "description": "objects or lists." },
+              { "name": "identifier", "value": "people", "type": "path", "description": "Object or list ID/slug." }
+            ],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Creates a new attribute on either an object or a list."
+        },
+        {
+          "info": { "name": "Get an attribute.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/:target/:identifier/attributes/:attribute",
+            "params": [
+              { "name": "target", "value": "objects", "type": "path", "description": "objects or lists." },
+              { "name": "identifier", "value": "people", "type": "path", "description": "Object or list ID/slug." },
+              { "name": "attribute", "value": "", "type": "path", "description": "Attribute ID or slug." }
+            ]
+          },
+          "docs": "Gets information about a single attribute."
+        },
+        {
+          "info": { "name": "List select options.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/:target/:identifier/attributes/:attribute/options",
+            "params": [
+              { "name": "target", "value": "objects", "type": "path", "description": "objects or lists." },
+              { "name": "identifier", "value": "people", "type": "path", "description": "Object or list ID/slug." },
+              { "name": "attribute", "value": "", "type": "path", "description": "Attribute ID or slug." }
+            ]
+          },
+          "docs": "Lists all select options for a select-type attribute."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Lists", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List all lists.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/lists" },
+          "docs": "Lists all lists that your access token has access to."
+        },
+        {
+          "info": { "name": "Create a list.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.attio.com/v2/lists", "body": { "type": "json", "data": "{}" } },
+          "docs": "Creates a new list."
+        },
+        {
+          "info": { "name": "Get a list.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/lists/:list",
+            "params": [{ "name": "list", "value": "", "type": "path", "description": "List ID or slug." }]
+          },
+          "docs": "Gets a single list by its ID or slug."
+        },
+        {
+          "info": { "name": "Update a list.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.attio.com/v2/lists/:list",
+            "params": [{ "name": "list", "value": "", "type": "path", "description": "List ID or slug." }],
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Updates an existing list."
+        }
+      ]
+    },
+    {
+      "info": { "name": "List Entries", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List entries.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.attio.com/v2/lists/:list/entries/query",
+            "params": [{ "name": "list", "value": "", "type": "path", "description": "List ID or slug." }],
+            "body": { "type": "json", "data": "{\n  \"filter\": {},\n  \"sorts\": []\n}" }
+          },
+          "docs": "Lists entries in a given list, with optional filter and sort."
+        },
+        {
+          "info": { "name": "Create an entry.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.attio.com/v2/lists/:list/entries",
+            "params": [{ "name": "list", "value": "", "type": "path", "description": "List ID or slug." }],
+            "body": { "type": "json", "data": "{\n  \"data\": {}\n}" }
+          },
+          "docs": "Adds a record to a list as a new list entry."
+        },
+        {
+          "info": { "name": "Get a list entry.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/lists/:list/entries/:entry_id",
+            "params": [
+              { "name": "list", "value": "", "type": "path", "description": "List ID or slug." },
+              { "name": "entry_id", "value": "", "type": "path", "description": "Entry ID." }
+            ]
+          },
+          "docs": "Gets a single list entry by its entry_id."
+        },
+        {
+          "info": { "name": "Delete a list entry.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.attio.com/v2/lists/:list/entries/:entry_id",
+            "params": [
+              { "name": "list", "value": "", "type": "path", "description": "List ID or slug." },
+              { "name": "entry_id", "value": "", "type": "path", "description": "Entry ID." }
+            ]
+          },
+          "docs": "Deletes a list entry by its entry_id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Notes", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List notes.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/notes" },
+          "docs": "Lists notes for all records or for a specific record."
+        },
+        {
+          "info": { "name": "Create a note.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.attio.com/v2/notes", "body": { "type": "json", "data": "{\n  \"data\": {}\n}" } },
+          "docs": "Creates a new note for a given record."
+        },
+        {
+          "info": { "name": "Get a note.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/notes/:note_id",
+            "params": [{ "name": "note_id", "value": "", "type": "path", "description": "Note ID." }]
+          },
+          "docs": "Gets a single note by its note_id."
+        },
+        {
+          "info": { "name": "Delete a note.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.attio.com/v2/notes/:note_id",
+            "params": [{ "name": "note_id", "value": "", "type": "path", "description": "Note ID." }]
+          },
+          "docs": "Deletes a note by its note_id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Tasks", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List tasks.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/tasks" },
+          "docs": "Lists all tasks."
+        },
+        {
+          "info": { "name": "Create a task.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.attio.com/v2/tasks", "body": { "type": "json", "data": "{\n  \"data\": {}\n}" } },
+          "docs": "Creates a new task."
+        },
+        {
+          "info": { "name": "Get a task.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/tasks/:task_id",
+            "params": [{ "name": "task_id", "value": "", "type": "path", "description": "Task ID." }]
+          },
+          "docs": "Gets a single task by its task_id."
+        },
+        {
+          "info": { "name": "Update a task.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.attio.com/v2/tasks/:task_id",
+            "params": [{ "name": "task_id", "value": "", "type": "path", "description": "Task ID." }],
+            "body": { "type": "json", "data": "{\n  \"data\": {}\n}" }
+          },
+          "docs": "Updates a task's deadline, completion status, or assignees."
+        },
+        {
+          "info": { "name": "Delete a task.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.attio.com/v2/tasks/:task_id",
+            "params": [{ "name": "task_id", "value": "", "type": "path", "description": "Task ID." }]
+          },
+          "docs": "Deletes a task by its task_id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Comments and Threads", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List threads.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/threads" },
+          "docs": "Lists threads of comments on a record or list entry."
+        },
+        {
+          "info": { "name": "Get a thread.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/threads/:thread_id",
+            "params": [{ "name": "thread_id", "value": "", "type": "path", "description": "Thread ID." }]
+          },
+          "docs": "Gets all comments in a thread."
+        },
+        {
+          "info": { "name": "Create a comment.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.attio.com/v2/comments", "body": { "type": "json", "data": "{\n  \"data\": {}\n}" } },
+          "docs": "Creates a new comment related to a thread, record, or entry."
+        },
+        {
+          "info": { "name": "Get a comment.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/comments/:comment_id",
+            "params": [{ "name": "comment_id", "value": "", "type": "path", "description": "Comment ID." }]
+          },
+          "docs": "Gets a single comment by its comment_id."
+        },
+        {
+          "info": { "name": "Delete a comment.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.attio.com/v2/comments/:comment_id",
+            "params": [{ "name": "comment_id", "value": "", "type": "path", "description": "Comment ID." }]
+          },
+          "docs": "Deletes a comment by its comment_id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Webhooks", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List webhooks.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/webhooks" },
+          "docs": "Gets all of the webhooks in your workspace."
+        },
+        {
+          "info": { "name": "Create a webhook.", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.attio.com/v2/webhooks", "body": { "type": "json", "data": "{\n  \"data\": {\n    \"target_url\": \"https://example.com/hook\",\n    \"subscriptions\": []\n  }\n}" } },
+          "docs": "Creates a webhook and its associated event subscriptions."
+        },
+        {
+          "info": { "name": "Get a webhook.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/webhooks/:webhook_id",
+            "params": [{ "name": "webhook_id", "value": "", "type": "path", "description": "Webhook ID." }]
+          },
+          "docs": "Gets a single webhook by its webhook_id."
+        },
+        {
+          "info": { "name": "Update a webhook.", "type": "http" },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.attio.com/v2/webhooks/:webhook_id",
+            "params": [{ "name": "webhook_id", "value": "", "type": "path", "description": "Webhook ID." }],
+            "body": { "type": "json", "data": "{\n  \"data\": {}\n}" }
+          },
+          "docs": "Updates a webhook and its associated subscriptions."
+        },
+        {
+          "info": { "name": "Delete a webhook.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.attio.com/v2/webhooks/:webhook_id",
+            "params": [{ "name": "webhook_id", "value": "", "type": "path", "description": "Webhook ID." }]
+          },
+          "docs": "Deletes a webhook by its webhook_id."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Workspace Members", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List workspace members.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/workspace_members" },
+          "docs": "Lists all workspace members in the workspace."
+        },
+        {
+          "info": { "name": "Get a workspace member.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.attio.com/v2/workspace_members/:workspace_member_id",
+            "params": [{ "name": "workspace_member_id", "value": "", "type": "path", "description": "Workspace member ID." }]
+          },
+          "docs": "Gets a single workspace member by its ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Meta", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Identify self.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.attio.com/v2/self" },
+          "docs": "Identifies the current access token, its workspace, member, and permissions."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
