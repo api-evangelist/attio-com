@@ -1,0 +1,13 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/attio-com-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Attio access token (API key or OAuth 2.0 bearer token) with the required scopes.
+  sources:
+  - openapi/attio-com-openapi.yml

@@ -276,6 +276,10 @@ apis:
     authorizing member, and the scopes and permissions it holds. Useful for token
     introspection and health checks before making other calls.
 common:
+- type: DomainSecurity
+  url: security/attio-com-domain-security.yml
+- type: Authentication
+  url: authentication/attio-com-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/attio
 - type: LinkedIn
