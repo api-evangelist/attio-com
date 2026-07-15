@@ -276,6 +276,8 @@ apis:
     authorizing member, and the scopes and permissions it holds. Useful for token
     introspection and health checks before making other calls.
 common:
+- type: AgenticAccess
+  url: agentic-access/attio-com-agentic-access.yml
 - type: DomainSecurity
   url: security/attio-com-domain-security.yml
 - type: Authentication
