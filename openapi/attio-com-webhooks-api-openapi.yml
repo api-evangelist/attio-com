@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: Attio REST Attributes Webhooks API
+  description: 'The Attio REST API exposes the Attio CRM''s object/attribute/record data model over HTTPS. Attio is an AI-native CRM built on flexible objects (people, companies, deals, users, workspaces, and custom objects), typed attributes, records, and lists. This specification covers the core data-model, activity, collaboration, and platform endpoints: objects, records, attributes, lists, list entries, notes, tasks, comments, threads, webhooks, workspace members, and token identification. All requests are authenticated with a Bearer access token (API key or OAuth) and scoped by granular permissions. Endpoints marked modeled in the repository review were derived from Attio''s published endpoint reference and follow Attio''s documented /v2 path conventions.'
+  version: '2.0'
+  contact:
+    name: Attio
+    url: https://attio.com
+  license:
+    name: Proprietary
+    url: https://attio.com/legal
+servers:
+- url: https://api.attio.com/v2
+  description: Attio REST API v2
+security:
+- bearerAuth: []
+tags:
+- name: Webhooks
+  description: Webhook subscriptions delivering signed HTTP callbacks on changes.
+paths:
+  /webhooks:
+    get:
+      operationId: listWebhooks
+      tags:
+      - Webhooks
+      summary: List webhooks
+      description: Gets all of the webhooks in your workspace.
+      responses:
+        '200':
+          description: A list of webhooks.
+    post:
+      operationId: createWebhook
+      tags:
+      - Webhooks
+      summary: Create a webhook
+      description: Creates a webhook and its associated event subscriptions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The created webhook.
+  /webhooks/{webhook_id}:
+    parameters:
+    - name: webhook_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: getWebhook
+      tags:
+      - Webhooks
+      summary: Get a webhook
+      description: Gets a single webhook by its webhook_id.
+      responses:
+        '200':
+          description: The requested webhook.
+    patch:
+      operationId: updateWebhook
+      tags:
+      - Webhooks
+      summary: Update a webhook
+      description: Updates a webhook and its associated subscriptions.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The updated webhook.
+    delete:
+      operationId: deleteWebhook
+      tags:
+      - Webhooks
+      summary: Delete a webhook
+      description: Deletes a webhook by its webhook_id.
+      responses:
+        '200':
+          description: The webhook was deleted.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Attio access token (API key or OAuth 2.0 bearer token) with the required scopes.

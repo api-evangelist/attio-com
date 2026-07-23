@@ -1,0 +1,97 @@
+openapi: 3.0.3
+info:
+  title: Attio REST Attributes Objects API
+  description: 'The Attio REST API exposes the Attio CRM''s object/attribute/record data model over HTTPS. Attio is an AI-native CRM built on flexible objects (people, companies, deals, users, workspaces, and custom objects), typed attributes, records, and lists. This specification covers the core data-model, activity, collaboration, and platform endpoints: objects, records, attributes, lists, list entries, notes, tasks, comments, threads, webhooks, workspace members, and token identification. All requests are authenticated with a Bearer access token (API key or OAuth) and scoped by granular permissions. Endpoints marked modeled in the repository review were derived from Attio''s published endpoint reference and follow Attio''s documented /v2 path conventions.'
+  version: '2.0'
+  contact:
+    name: Attio
+    url: https://attio.com
+  license:
+    name: Proprietary
+    url: https://attio.com/legal
+servers:
+- url: https://api.attio.com/v2
+  description: Attio REST API v2
+security:
+- bearerAuth: []
+tags:
+- name: Objects
+  description: Top-level data model - people, companies, deals, and custom objects.
+paths:
+  /objects:
+    get:
+      operationId: listObjects
+      tags:
+      - Objects
+      summary: List objects
+      description: Lists all system-defined and user-defined objects in your workspace.
+      responses:
+        '200':
+          description: A list of objects.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createObject
+      tags:
+      - Objects
+      summary: Create an object
+      description: Creates a new custom object in your workspace.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The created object.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /objects/{object}:
+    parameters:
+    - $ref: '#/components/parameters/Object'
+    get:
+      operationId: getObject
+      tags:
+      - Objects
+      summary: Get an object
+      description: Gets a single object by its ID or slug.
+      responses:
+        '200':
+          description: The requested object.
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateObject
+      tags:
+      - Objects
+      summary: Update an object
+      description: Updates a single object.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The updated object.
+components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+    Unauthorized:
+      description: The access token is missing, invalid, or lacks the required scope.
+  parameters:
+    Object:
+      name: object
+      in: path
+      required: true
+      description: The object ID or slug (for example people, companies, deals, or a custom object).
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Attio access token (API key or OAuth 2.0 bearer token) with the required scopes.

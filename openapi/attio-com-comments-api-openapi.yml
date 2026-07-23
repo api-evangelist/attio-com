@@ -1,0 +1,67 @@
+openapi: 3.0.3
+info:
+  title: Attio REST Attributes Comments API
+  description: 'The Attio REST API exposes the Attio CRM''s object/attribute/record data model over HTTPS. Attio is an AI-native CRM built on flexible objects (people, companies, deals, users, workspaces, and custom objects), typed attributes, records, and lists. This specification covers the core data-model, activity, collaboration, and platform endpoints: objects, records, attributes, lists, list entries, notes, tasks, comments, threads, webhooks, workspace members, and token identification. All requests are authenticated with a Bearer access token (API key or OAuth) and scoped by granular permissions. Endpoints marked modeled in the repository review were derived from Attio''s published endpoint reference and follow Attio''s documented /v2 path conventions.'
+  version: '2.0'
+  contact:
+    name: Attio
+    url: https://attio.com
+  license:
+    name: Proprietary
+    url: https://attio.com/legal
+servers:
+- url: https://api.attio.com/v2
+  description: Attio REST API v2
+security:
+- bearerAuth: []
+tags:
+- name: Comments
+  description: Comments within threads on records and list entries.
+paths:
+  /comments:
+    post:
+      operationId: createComment
+      tags:
+      - Comments
+      summary: Create a comment
+      description: Creates a new comment related to an existing thread, record, or entry.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The created comment.
+  /comments/{comment_id}:
+    parameters:
+    - name: comment_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: getComment
+      tags:
+      - Comments
+      summary: Get a comment
+      description: Gets a single comment by its comment_id.
+      responses:
+        '200':
+          description: The requested comment.
+    delete:
+      operationId: deleteComment
+      tags:
+      - Comments
+      summary: Delete a comment
+      description: Deletes a comment by its comment_id.
+      responses:
+        '200':
+          description: The comment was deleted.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Attio access token (API key or OAuth 2.0 bearer token) with the required scopes.

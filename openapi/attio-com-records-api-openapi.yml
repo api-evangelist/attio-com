@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+  title: Attio REST Attributes Records API
+  description: 'The Attio REST API exposes the Attio CRM''s object/attribute/record data model over HTTPS. Attio is an AI-native CRM built on flexible objects (people, companies, deals, users, workspaces, and custom objects), typed attributes, records, and lists. This specification covers the core data-model, activity, collaboration, and platform endpoints: objects, records, attributes, lists, list entries, notes, tasks, comments, threads, webhooks, workspace members, and token identification. All requests are authenticated with a Bearer access token (API key or OAuth) and scoped by granular permissions. Endpoints marked modeled in the repository review were derived from Attio''s published endpoint reference and follow Attio''s documented /v2 path conventions.'
+  version: '2.0'
+  contact:
+    name: Attio
+    url: https://attio.com
+  license:
+    name: Proprietary
+    url: https://attio.com/legal
+servers:
+- url: https://api.attio.com/v2
+  description: Attio REST API v2
+security:
+- bearerAuth: []
+tags:
+- name: Records
+  description: Individual records within an object, with CRUD, query, and upsert.
+paths:
+  /objects/{object}/records/query:
+    parameters:
+    - $ref: '#/components/parameters/Object'
+    post:
+      operationId: listRecords
+      tags:
+      - Records
+      summary: List records
+      description: Lists people, company, or other records, with the option to filter and sort results. Confirmed endpoint - POST /v2/objects/{object}/records/query.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  type: object
+                sorts:
+                  type: array
+                  items:
+                    type: object
+                limit:
+                  type: integer
+                offset:
+                  type: integer
+      responses:
+        '200':
+          description: A page of matching records.
+  /objects/{object}/records:
+    parameters:
+    - $ref: '#/components/parameters/Object'
+    post:
+      operationId: createRecord
+      tags:
+      - Records
+      summary: Create a record
+      description: Creates a new person, company, or other record.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The created record.
+    put:
+      operationId: assertRecord
+      tags:
+      - Records
+      summary: Assert a record
+      description: Creates or updates (upserts) a record using a matching attribute to determine whether a record already exists.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The asserted (created or updated) record.
+  /objects/{object}/records/{record_id}:
+    parameters:
+    - $ref: '#/components/parameters/Object'
+    - $ref: '#/components/parameters/RecordId'
+    get:
+      operationId: getRecord
+      tags:
+      - Records
+      summary: Get a record
+      description: Gets a single record by its record_id.
+      responses:
+        '200':
+          description: The requested record.
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateRecordAppend
+      tags:
+      - Records
+      summary: Update a record (append multiselect values)
+      description: Updates a record, appending values to multiselect attributes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The updated record.
+    put:
+      operationId: updateRecordOverwrite
+      tags:
+      - Records
+      summary: Update a record (overwrite multiselect values)
+      description: Updates a record, overwriting values on multiselect attributes.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: The updated record.
+    delete:
+      operationId: deleteRecord
+      tags:
+      - Records
+      summary: Delete a record
+      description: Deletes a record by its record_id.
+      responses:
+        '200':
+          description: The record was deleted.
+  /objects/{object}/records/{record_id}/attributes/{attribute}/values:
+    parameters:
+    - $ref: '#/components/parameters/Object'
+    - $ref: '#/components/parameters/RecordId'
+    - $ref: '#/components/parameters/Attribute'
+    get:
+      operationId: listRecordAttributeValues
+      tags:
+      - Records
+      summary: List record attribute values
+      description: Lists all values, including historic values, for a given attribute on a record.
+      responses:
+        '200':
+          description: A list of attribute values.
+  /objects/{object}/records/{record_id}/entries:
+    parameters:
+    - $ref: '#/components/parameters/Object'
+    - $ref: '#/components/parameters/RecordId'
+    get:
+      operationId: listRecordEntries
+      tags:
+      - Records
+      summary: List record entries
+      description: Lists all entries, across all lists, for which this record is the parent.
+      responses:
+        '200':
+          description: A list of list entries.
+components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+  parameters:
+    RecordId:
+      name: record_id
+      in: path
+      required: true
+      schema:
+        type: string
+    Object:
+      name: object
+      in: path
+      required: true
+      description: The object ID or slug (for example people, companies, deals, or a custom object).
+      schema:
+        type: string
+    Attribute:
+      name: attribute
+      in: path
+      required: true
+      description: The attribute ID or slug.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Attio access token (API key or OAuth 2.0 bearer token) with the required scopes.

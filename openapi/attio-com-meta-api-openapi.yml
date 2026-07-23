@@ -1,0 +1,41 @@
+openapi: 3.0.3
+info:
+  title: Attio REST Attributes Meta API
+  description: 'The Attio REST API exposes the Attio CRM''s object/attribute/record data model over HTTPS. Attio is an AI-native CRM built on flexible objects (people, companies, deals, users, workspaces, and custom objects), typed attributes, records, and lists. This specification covers the core data-model, activity, collaboration, and platform endpoints: objects, records, attributes, lists, list entries, notes, tasks, comments, threads, webhooks, workspace members, and token identification. All requests are authenticated with a Bearer access token (API key or OAuth) and scoped by granular permissions. Endpoints marked modeled in the repository review were derived from Attio''s published endpoint reference and follow Attio''s documented /v2 path conventions.'
+  version: '2.0'
+  contact:
+    name: Attio
+    url: https://attio.com
+  license:
+    name: Proprietary
+    url: https://attio.com/legal
+servers:
+- url: https://api.attio.com/v2
+  description: Attio REST API v2
+security:
+- bearerAuth: []
+tags:
+- name: Meta
+  description: Access token identification and introspection.
+paths:
+  /self:
+    get:
+      operationId: identifySelf
+      tags:
+      - Meta
+      summary: Identify
+      description: Identifies the current access token, the workspace it is linked to, the authorizing member, and any permissions/scopes it holds.
+      responses:
+        '200':
+          description: The access token identity and permissions.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    Unauthorized:
+      description: The access token is missing, invalid, or lacks the required scope.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Attio access token (API key or OAuth 2.0 bearer token) with the required scopes.
